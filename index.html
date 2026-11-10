@@ -486,7 +486,12 @@ async function initDB(){
   if(snap.exists&&snap.data().state){var cloud=snap.data().state;if(cloud&&cloud.owned)S=Object.assign(S,cloud);try{localStorage.setItem("beat-v2",JSON.stringify(S))}catch(e){}}
   else await ref.set({nick:S.nick||"Игрок",state:S,updatedAt:Date.now()},{merge:true});
   nickLbl();shop();stats();bsub();startPresence();push();
-varON=1,TOT=0;
+ }catch(e){
+  console.error(e);
+  tq("⚠️ Онлайн не подключён. Проверь Firebase и интернет.");
+ }
+}
+var ON=1,TOT=0;
 function stat(){$("stat").textContent="🟢 Сейчас играют: "+Math.max(1,ON)+(TOT?" · 👥 Всего играло: "+TOT:"")}
 async function stats(){try{var q=await DB.collection("players").get();TOT=q.size;stat()}catch(e){}}
 var BM=200000000,BH=0,BO=0,BC=0,BU=null,bp=0,BNM=["Дракон","Титан","Гигант","Король кулаков"],BEM=["🐲","🗿","👹","🦖"];
