@@ -1,5 +1,5 @@
-
 {
+  "id": "/Lypu-pryatela/",
   "name": "Бей друга",
   "short_name": "Бей друга",
   "description": "Онлайн-игра Бей друга",
@@ -9,5 +9,17 @@
   "orientation": "any",
   "background_color": "#ff8500",
   "theme_color": "#1aef00",
-  "categories": ["games"]
+  "categories": ["games"],
+  "icons": [
+    {
+      "src": "./icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
 }
