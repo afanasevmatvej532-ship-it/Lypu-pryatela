@@ -4,6 +4,6 @@ window.FIREBASE_CONFIG = {
   projectId: "lupi-priatela",
   storageBucket: "lupi-priatela.firebasestorage.app",
   messagingSenderId: "320596765598",
-  appId: "1:320596765598:web:3da4f49e16a85bdb24c48f",
+  appId: "1:176474353989:web:96d4d211b03e3f8cfcce2c",
   measurementId: "G-K6NWHNKZSJ"
 };
