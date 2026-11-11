@@ -3,193 +3,457 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#10243b">
 <title>Бей друга — Новогодний ивент</title>
+
 <style>
-*{box-sizing:border-box}
-body{
- margin:0;color:white;text-align:center;font-family:Arial,sans-serif;
- background:linear-gradient(#071b38,#123d5c,#17634e);
- min-height:100vh;overflow-x:hidden
+* {
+  box-sizing: border-box;
 }
-header{padding:20px 10px;background:#092746dd;border-bottom:3px solid #e6c34c}
-h1{margin:0;color:#ffe47b;text-shadow:0 0 12px #ffae00}
-.panel{background:#092b48dd;border:2px solid #4ba9c2;border-radius:18px;
- margin:14px auto;padding:16px;max-width:500px;width:94%;box-shadow:0 5px 20px #0006}
-.stats{display:flex;justify-content:space-around;gap:8px;flex-wrap:wrap}
-.stat{background:#174968;padding:10px;border-radius:12px;min-width:100px}
-#character{font-size:100px;cursor:pointer;user-select:none;
- display:inline-block;transition:transform .12s;filter:drop-shadow(0 8px 8px #0008)}
-#character:active{transform:scale(.85) rotate(-8deg)}
-button{border:0;border-radius:12px;padding:12px 16px;margin:5px;
- background:#e7b83f;color:#241700;font-weight:bold;font-size:15px;cursor:pointer}
-button:disabled{opacity:.45;cursor:not-allowed}
-.weapon{background:#174968;border-radius:12px;padding:12px;margin:9px 0;
- display:flex;align-items:center;justify-content:space-between;gap:8px;text-align:left}
-.weapon button{margin:0}
-#message{min-height:28px;color:#ffe98c;font-weight:bold}
-#snow{position:fixed;inset:0;pointer-events:none;z-index:5;overflow:hidden}
-.flake{position:absolute;top:-20px;color:white;animation:fall linear infinite}
-@keyframes fall{to{transform:translateY(110vh) rotate(360deg)}}
-.small{font-size:13px;color:#c7e9f5}
+
+body {
+  margin: 0;
+  padding: 15px;
+  color: white;
+  font-family: Arial, sans-serif;
+  text-align: center;
+  background: linear-gradient(180deg, #07182c, #17466b, #09243b);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+h1 {
+  cursor: pointer;
+  font-size: 29px;
+  text-shadow: 0 0 15px #55d9ff;
+}
+
+.subtitle {
+  color: #b9eaff;
+}
+
+.panel {
+  max-width: 500px;
+  margin: 15px auto;
+  padding: 16px;
+  background: #ffffff15;
+  border: 1px solid #ffffff35;
+  border-radius: 18px;
+  box-shadow: 0 5px 20px #0005;
+}
+
+.stats {
+  display: flex;
+  justify-content: space-around;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.stat {
+  background: #061b30;
+  padding: 12px;
+  border-radius: 12px;
+  min-width: 100px;
+}
+
+.stat strong {
+  display: block;
+  font-size: 23px;
+  color: #ffd75e;
+}
+
+.character {
+  font-size: 105px;
+  margin: 12px;
+  cursor: pointer;
+  user-select: none;
+  transition: transform .15s;
+}
+
+.character:active {
+  transform: scale(.85);
+}
+
+button {
+  border: none;
+  border-radius: 12px;
+  padding: 12px 17px;
+  margin: 5px;
+  color: white;
+  font-size: 15px;
+  font-weight: bold;
+  background: #167fc1;
+  cursor: pointer;
+}
+
+button:active {
+  transform: scale(.96);
+}
+
+.green { background: #168c52; }
+.red { background: #c43d48; }
+.gold { background: #b8860b; color: white; }
+
+.shop-item {
+  background: #092b48;
+  border-radius: 12px;
+  padding: 12px;
+  margin: 9px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  text-align: left;
+}
+
+.shop-item button {
+  flex-shrink: 0;
+}
+
+#adminEvents {
+  display: none;
+  border: 2px solid #ffd75e;
+  background: #362b13;
+}
+
+#message {
+  min-height: 25px;
+  color: #ffe17b;
+  font-weight: bold;
+}
+
+#eventName {
+  color: #7ce5ff;
+  font-size: 20px;
+}
+
+.snow {
+  position: fixed;
+  top: -20px;
+  color: white;
+  pointer-events: none;
+  z-index: 10;
+  animation: fall linear infinite;
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(110vh);
+  }
+}
+
+.small {
+  color: #b9d9ec;
+  font-size: 12px;
+}
 </style>
 </head>
+
 <body>
-<div id="snow"></div>
-<header>
- <h1>🎄 БЕЙ ДРУГА 🎄</h1>
- <p>НОВОГОДНИЙ ИВЕНТ</p>
-</header>
+
+<h1 id="gameTitle">🎄 БЕЙ ДРУГА 🎄</h1>
+<p class="subtitle">НОВОГОДНИЙ ИВЕНТ ❄️</p>
 
 <div class="panel">
- <div class="stats">
-  <div class="stat">⭐ Очки<br><b id="score">0</b></div>
-  <div class="stat">🎁 Подарки<br><b id="gifts">0</b></div>
-  <div class="stat">⚔️ Оружие<br><b id="weaponName">Рукавица</b></div>
- </div>
+  <div class="stats">
+    <div class="stat">
+      <strong id="score">0</strong>
+      Очки
+    </div>
+    <div class="stat">
+      <strong id="gifts">0</strong>
+      Подарки 🎁
+    </div>
+    <div class="stat">
+      <strong id="weapon">Варежка</strong>
+      Оружие
+    </div>
+  </div>
 </div>
 
 <div class="panel">
- <h2>❄️ Праздничное событие</h2>
- <p id="eventText">Кто-то приближается...</p>
- <div id="character" onclick="hit()">🎅</div>
- <p id="characterName">Санта</p>
- <p>Нажимай на персонажа, чтобы завершить событие!</p>
- <p>Прогресс: <b id="progress">0 / 10</b></p>
- <div id="message">Удачи! 🎁</div>
- <button onclick="newEvent()">🔄 Найти нового персонажа</button>
+  <h2>🎅 Новогоднее событие</h2>
+  <div id="eventName">Ожидание события...</div>
+  <div class="character" id="character" onclick="hit()">🎅</div>
+  <p>Нажимай на персонажа, чтобы получать очки и подарки!</p>
+  <div id="message">Удачи!</div>
+  <button class="gold" onclick="newEvent()">Найти персонажа</button>
 </div>
 
 <div class="panel">
- <h2>🛒 Новогодний магазин</h2>
- <p class="small">Покупай праздничное оружие за подарки.</p>
- <div id="shop"></div>
+  <h2>🛒 Магазин оружия</h2>
+  <div id="shop"></div>
 </div>
 
 <div class="panel">
- <h2>🏆 Твои достижения</h2>
- <p id="achievement">Пока нет достижений</p>
- <button onclick="resetGame()">Сбросить прогресс</button>
+  <h2>🏆 Достижения</h2>
+  <p id="achievement">Пока нет достижений</p>
 </div>
+
+<!-- СЕКРЕТНАЯ АДМИНКА -->
+<div class="panel" id="adminEvents">
+  <h2>👑 АДМИН-ПАНЕЛЬ</h2>
+  <p>Управление новогодними событиями</p>
+
+  <button onclick="spawnEvent(0)">🎅 Санта</button>
+  <button onclick="spawnEvent(1)">⛄ Снеговик</button>
+  <button onclick="spawnEvent(2)">🧝 Эльф</button>
+  <button onclick="spawnEvent(3)">🦌 Олень</button>
+  <button onclick="spawnEvent(4)">💚 Гринч</button>
+
+  <hr>
+
+  <button class="gold" onclick="spawnRandomEvent()">🎲 Случайный ивент</button>
+  <button class="red" onclick="stopEvent()">⛔ Остановить ивент</button>
+
+  <p id="adminMessage"></p>
+  <button class="red" onclick="closeAdmin()">Закрыть админку</button>
+</div>
+
+<p class="small">Демо-версия. Прогресс сохраняется на этом устройстве.</p>
 
 <script>
-const weapons=[
- {name:"Рукавица",emoji:"🧤",power:1,cost:0},
- {name:"Леденцовый жезл",emoji:"🍭",power:2,cost:8},
- {name:"Снежный бластер",emoji:"❄️",power:3,cost:14},
- {name:"Посох Санты",emoji:"🎅",power:4,cost:22},
- {name:"Подарочный молот",emoji:"🎁",power:5,cost:35}
-];
-const characters=[
- {name:"Санта",emoji:"🎅"},
- {name:"Снеговик",emoji:"⛄"},
- {name:"Эльф",emoji:"🧝"},
- {name:"Олень",emoji:"🦌"},
- {name:"Гринч",emoji:"💚"}
-];
-let data;
-try{
- data=JSON.parse(localStorage.getItem("winterDemoSave"))||{};
-}catch(e){data={}}
-let score=data.score||0;
-let gifts=data.gifts||0;
-let owned=data.owned||[0];
-let selected=data.selected||0;
-let hits=0;
-let target=10;
-let current=0;
-let eventNumber=0;
+const ADMIN_PASSWORD = "2026";
 
-function save(){
- localStorage.setItem("winterDemoSave",JSON.stringify({
-  score,gifts,owned,selected
- }));
+const characters = [
+  { name: "Санта-Клаус", emoji: "🎅", reward: 2 },
+  { name: "Снеговик", emoji: "⛄", reward: 1 },
+  { name: "Новогодний эльф", emoji: "🧝", reward: 2 },
+  { name: "Северный олень", emoji: "🦌", reward: 3 },
+  { name: "Гринч", emoji: "💚", reward: 5 }
+];
+
+const weapons = [
+  { name: "Варежка", price: 0, power: 1 },
+  { name: "Леденец", price: 10, power: 2 },
+  { name: "Снежный бластер", price: 25, power: 4 },
+  { name: "Посох Санты", price: 50, power: 7 },
+  { name: "Подарочный молот", price: 100, power: 12 }
+];
+
+let saveData = {};
+
+try {
+  saveData = JSON.parse(localStorage.getItem("winterDemoSave")) || {};
+} catch (e) {
+  saveData = {};
 }
-function update(){
- document.getElementById("score").textContent=score;
- document.getElementById("gifts").textContent=gifts;
- document.getElementById("weaponName").textContent=weapons[selected].name;
- document.getElementById("progress").textContent=hits+" / "+target;
- document.getElementById("achievement").textContent=
-  score>=100?"🏆 Новогодний чемпион!":score>=30?"⭐ Опытный игрок":"Победи больше персонажей!";
- renderShop();
- save();
+
+let score = Number(saveData.score) || 0;
+let gifts = Number(saveData.gifts) || 0;
+let weaponIndex = Number(saveData.weaponIndex) || 0;
+let owned = Array.isArray(saveData.owned) ? saveData.owned : [0];
+let currentCharacter = 0;
+let eventActive = true;
+
+function save() {
+  localStorage.setItem("winterDemoSave", JSON.stringify({
+    score,
+    gifts,
+    weaponIndex,
+    owned
+  }));
 }
-function newEvent(){
- current=Math.floor(Math.random()*characters.length);
- hits=0;
- target=8+Math.floor(Math.random()*5);
- document.getElementById("character").textContent=characters[current].emoji;
- document.getElementById("characterName").textContent=characters[current].name;
- document.getElementById("eventText").textContent="Праздничный персонаж появился!";
- document.getElementById("message").textContent="Выполни событие и получи шанс на подарки!";
- update();
+
+function update() {
+  document.getElementById("score").textContent = score;
+  document.getElementById("gifts").textContent = gifts;
+  document.getElementById("weapon").textContent = weapons[weaponIndex].name;
+
+  let achievement = "Пока нет достижений";
+
+  if (score >= 100) achievement = "🥉 Новогодний новичок";
+  if (score >= 500) achievement = "🥈 Повелитель праздника";
+  if (score >= 1000) achievement = "🥇 Легенда Нового года";
+
+  document.getElementById("achievement").textContent = achievement;
+
+  save();
 }
-function hit(){
- if(hits>=target)return;
- hits++;
- score+=weapons[selected].power;
- document.getElementById("message").textContent="⭐ +"+weapons[selected].power+" очка!";
- if(hits>=target){
-  eventNumber++;
-  let won=Math.random()<0.65;
-  if(won){
-   let amount=1+Math.floor(Math.random()*3);
-   gifts+=amount;
-   document.getElementById("message").textContent="🎁 Ты получил "+amount+" подарка!";
-  }else{
-   document.getElementById("message").textContent="Персонаж убежал! Попробуй ещё раз.";
+
+function newEvent() {
+  const index = Math.floor(Math.random() * characters.length);
+  spawnEvent(index);
+}
+
+function spawnEvent(index) {
+  currentCharacter = index;
+  eventActive = true;
+
+  const character = characters[index];
+
+  document.getElementById("character").textContent = character.emoji;
+  document.getElementById("eventName").textContent =
+    "Появился: " + character.name;
+
+  document.getElementById("message").textContent =
+    "Событие началось! Получай подарки!";
+
+  const adminMessage = document.getElementById("adminMessage");
+  if (adminMessage) {
+    adminMessage.textContent = "Запущен ивент: " + character.name;
   }
-  document.getElementById("eventText").textContent="Событие завершено!";
- }
- update();
 }
-function renderShop(){
- let html="";
- weapons.forEach((w,i)=>{
-  let has=owned.includes(i);
-  html+=`<div class="weapon">
-   <div><b>${w.emoji} ${w.name}</b><br>
-   <span class="small">Сила: ${w.power} · Цена: ${w.cost} 🎁</span></div>
-   <button onclick="buy(${i})" ${i===selected||(!has&&gifts<w.cost)?"disabled":""}>
-   ${i===selected?"Выбрано":has?"Выбрать":"Купить"}</button>
-  </div>`;
- });
- document.getElementById("shop").innerHTML=html;
+
+function spawnRandomEvent() {
+  const index = Math.floor(Math.random() * characters.length);
+  spawnEvent(index);
 }
-function buy(i){
- if(owned.includes(i)){selected=i;}
- else{
-  if(gifts<weapons[i].cost)return;
-  gifts-=weapons[i].cost;
-  owned.push(i);
-  selected=i;
-  document.getElementById("message").textContent="🎉 Покупка совершена!";
- }
- update();
+
+function stopEvent() {
+  eventActive = false;
+  document.getElementById("character").textContent = "❄️";
+  document.getElementById("eventName").textContent = "Ивент остановлен";
+  document.getElementById("message").textContent = "Ожидай нового события!";
+  document.getElementById("adminMessage").textContent = "Ивент остановлен";
 }
-function resetGame(){
- if(!confirm("Точно сбросить весь прогресс?"))return;
- score=0;gifts=0;owned=[0];selected=0;
- update();newEvent();
+
+function hit() {
+  if (!eventActive) {
+    document.getElementById("message").textContent =
+      "Сейчас нет активного события!";
+    return;
+  }
+
+  const power = weapons[weaponIndex].power;
+  const character = characters[currentCharacter];
+
+  score += power;
+
+  let giftChance = Math.random();
+
+  if (giftChance < 0.65) {
+    const earned = Math.floor(Math.random() * 3) + 1;
+    gifts += earned;
+
+    document.getElementById("message").textContent =
+      "⭐ +" + power + " очков и 🎁 +" + earned + " подарков!";
+  } else {
+    document.getElementById("message").textContent =
+      "+" + power + " очков! Продолжай!";
+  }
+
+  if (Math.random() < 0.12) {
+    newEvent();
+  }
+
+  update();
 }
-function makeSnow(){
- const snow=document.getElementById("snow");
- for(let i=0;i<45;i++){
-  let f=document.createElement("div");
-  f.className="flake";
-  f.textContent="❄";
-  f.style.left=Math.random()*100+"%";
-  f.style.animationDuration=(5+Math.random()*9)+"s";
-  f.style.animationDelay=(-Math.random()*12)+"s";
-  f.style.fontSize=(10+Math.random()*17)+"px";
-  snow.appendChild(f);
- }
+
+function renderShop() {
+  const shop = document.getElementById("shop");
+  shop.innerHTML = "";
+
+  weapons.forEach((weapon, index) => {
+    const item = document.createElement("div");
+    item.className = "shop-item";
+
+    const info = document.createElement("span");
+    info.textContent =
+      weapon.name + " | Сила: " + weapon.power +
+      " | Цена: " + weapon.price + " 🎁";
+
+    const button = document.createElement("button");
+
+    if (owned.includes(index)) {
+      button.textContent = weaponIndex === index ? "Выбрано" : "Выбрать";
+      button.className = "green";
+      button.onclick = () => selectWeapon(index);
+    } else {
+      button.textContent = "Купить";
+      button.onclick = () => buy(index);
+    }
+
+    item.appendChild(info);
+    item.appendChild(button);
+    shop.appendChild(item);
+  });
 }
-makeSnow();
-newEvent();
+
+function buy(index) {
+  const weapon = weapons[index];
+
+  if (gifts < weapon.price) {
+    document.getElementById("message").textContent =
+      "Не хватает подарков!";
+    return;
+  }
+
+  gifts -= weapon.price;
+  owned.push(index);
+  weaponIndex = index;
+
+  renderShop();
+  update();
+
+  document.getElementById("message").textContent =
+    "🎉 Куплено: " + weapon.name;
+}
+
+function selectWeapon(index) {
+  if (!owned.includes(index)) return;
+
+  weaponIndex = index;
+  renderShop();
+  update();
+}
+
+function closeAdmin() {
+  document.getElementById("adminEvents").style.display = "none";
+}
+
+// СЕКРЕТНОЕ ОТКРЫТИЕ ПО 5 НАЖАТИЯМ
+let titleClicks = 0;
+let titleTimer;
+
+document.getElementById("gameTitle").addEventListener("click", () => {
+  titleClicks++;
+
+  clearTimeout(titleTimer);
+
+  titleTimer = setTimeout(() => {
+    titleClicks = 0;
+  }, 2500);
+
+  if (titleClicks >= 5) {
+    titleClicks = 0;
+
+    const password = prompt("👑 Введи пароль администратора:");
+
+    if (password === null) return;
+
+    if (password === ADMIN_PASSWORD) {
+      document.getElementById("adminEvents").style.display = "block";
+      document.getElementById("adminMessage").textContent =
+        "Добро пожаловать, администратор!";
+    } else {
+      alert("❌ Неверный пароль!");
+    }
+  }
+});
+
+// СНЕГ
+function makeSnow() {
+  const snow = document.createElement("div");
+  snow.className = "snow";
+  snow.textContent = "❄";
+  snow.style.left = Math.random() * 100 + "vw";
+  snow.style.fontSize = (10 + Math.random() * 18) + "px";
+  snow.style.animationDuration = (4 + Math.random() * 6) + "s";
+
+  document.body.appendChild(snow);
+
+  setTimeout(() => snow.remove(), 10000);
+}
+
+setInterval(makeSnow, 250);
+
+// Запуск
+renderShop();
 update();
+newEvent();
 </script>
+
 </body>
 </html>
-
