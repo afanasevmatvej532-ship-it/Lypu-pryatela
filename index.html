@@ -1,459 +1,342 @@
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#10243b">
-<title>Бей друга — Новогодний ивент</title>
-
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Лупи приятеля — Хэллоуинское обновление</title>
 <style>
-* {
-  box-sizing: border-box;
-}
+:root{--bg:#dff1ff;--card:#ffffff;--tx:#17203a;--mut:#5b6784;--ac:#ffb400;--acx:#3a2a00;--hp:#ff4f64;--ok:#1f9d63;--bd:#b9d6ee;--stage:#bfe3ff;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121634;--card:#1d2350;--tx:#f1f3ff;--mut:#9aa4d6;--ac:#ffc21a;--acx:#2a1d00;--hp:#ff6b7d;--ok:#4fd493;--bd:#2f3880;--stage:#232b66;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#121634;--card:#1d2350;--tx:#f1f3ff;--mut:#9aa4d6;--ac:#ffc21a;--acx:#2a1d00;--hp:#ff6b7d;--ok:#4fd493;--bd:#2f3880;--stage:#232b66;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:"Trebuchet MS","Segoe UI",system-ui,sans-serif;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
+.wrap{max-width:520px;margin:0 auto;padding:12px 14px 28px}
+.top{display:flex;justify-content:space-between;align-items:center;font-weight:800;font-size:20px}
+.top small{display:block;font-size:13px;font-weight:600;color:var(--mut)}
+.money{background:var(--ac);color:var(--acx);padding:6px 14px;border-radius:999px}
+.stage{position:relative;margin:12px 0;background:var(--stage);border:3px solid var(--bd);border-radius:24px;padding:14px;text-align:center;touch-action:manipulation;cursor:pointer;overflow:hidden}
+.name{font-size:26px;font-weight:900}
+.hpbar{height:16px;background:var(--bd);border-radius:99px;overflow:hidden;margin:8px auto 0;max-width:300px}
+.hpbar i{display:block;height:100%;width:100%;background:var(--hp);transition:width .12s}
+.hptx{font-size:13px;color:var(--mut);margin-top:4px}
+#face{width:210px;height:210px;display:block;margin:6px auto 0}
+.shake{animation:sh .18s}
+@keyframes sh{0%{transform:translate(0,0) rotate(0)}25%{transform:translate(-9px,2px) rotate(-4deg)}75%{transform:translate(9px,-2px) rotate(4deg)}100%{transform:none}}
+.fl{position:absolute;font-weight:900;font-size:26px;color:var(--ac);text-shadow:0 2px 0 var(--acx);pointer-events:none;animation:fl .7s forwards}
+@keyframes fl{to{transform:translateY(-70px);opacity:0}}
+.tip{font-size:13px;color:var(--mut);margin-top:6px}
+h2{font-size:19px;margin:16px 0 8px}
+.w{display:flex;align-items:center;gap:12px;background:var(--card);border:2px solid var(--bd);border-radius:16px;padding:10px 12px;margin-bottom:8px}
+.w.on{border-color:var(--ok)}
+.w .e{font-size:30px;width:40px;text-align:center}
+.w .i{flex:1;min-width:0}
+.w b{display:block}
+.w span{font-size:13px;color:var(--mut)}
+button{font:inherit;font-weight:800;border:0;border-radius:12px;padding:10px 14px;background:var(--ac);color:var(--acx);min-width:92px;cursor:pointer}
+button:disabled{opacity:.45;cursor:default}
+button.eq{background:var(--ok);color:#fff}
+button.cur{background:transparent;color:var(--ok);border:2px solid var(--ok)}
+.rs{margin-top:18px;background:transparent;color:var(--mut);border:2px solid var(--bd);width:100%}
+input,select{-webkit-user-select:text;user-select:text}
+#adm-open{position:fixed;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));min-width:0;width:46px;height:46px;padding:0;border-radius:50%;font-size:22px;opacity:.85;z-index:5}
+#adm{display:none;position:fixed;inset:0;z-index:10;background:var(--bg);overflow-y:auto;padding:calc(14px + env(safe-area-inset-top,0px)) 14px calc(24px + env(safe-area-inset-bottom,0px))}
+#adm.open{display:block}
+.ap{max-width:520px;margin:0 auto}
+.ap h2:first-of-type{margin-top:16px}
+.ar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+.ap input,.ap select{font:inherit;padding:10px 12px;border-radius:12px;border:2px solid var(--bd);background:var(--card);color:var(--tx);min-width:0;flex:1 1 140px}
+.ap .ghost{background:transparent;color:var(--tx);border:2px solid var(--bd)}
+#a-msg{min-height:22px;color:var(--ok);font-weight:700;margin-top:6px}
+#toast{position:fixed;left:12px;right:12px;top:calc(12px + env(safe-area-inset-top,0px));max-width:496px;margin:0 auto;background:var(--ac);color:var(--acx);font-weight:800;padding:14px 16px;border-radius:16px;z-index:20;text-align:center;opacity:0;pointer-events:none;transition:opacity .3s}
+#toast.on{opacity:1}
+.sw{position:absolute;font-size:36px;pointer-events:none;transform-origin:80% 80%;animation:sw .28s forwards}
+@keyframes sw{0%{transform:rotate(-70deg);opacity:1}60%{transform:rotate(25deg);opacity:1}100%{transform:rotate(25deg) scale(1.2);opacity:0}}
+.pt{position:absolute;font-size:20px;pointer-events:none;animation:pt .7s ease-out forwards}
+@keyframes pt{to{transform:translate(var(--dx),var(--dy)) scale(.4) rotate(200deg);opacity:0}}
+.wd{position:absolute;font-weight:900;font-size:18px;color:var(--hp);pointer-events:none;animation:fl .7s forwards}
+.fl.crit{font-size:36px;color:var(--hp);text-shadow:0 2px 0 #fff}
+#flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none}
+#flash.on{animation:fs .25s}
+@keyframes fs{0%{opacity:.7}100%{opacity:0}}
+.stage.big{animation:big .25s}
+@keyframes big{0%,100%{transform:none}30%{transform:translate(6px,-6px) scale(1.02)}60%{transform:translate(-6px,4px)}}
+#combo{position:absolute;left:12px;top:10px;font-weight:900;color:var(--ac);text-shadow:0 2px 0 var(--acx);pointer-events:none}
+#snd{position:absolute;right:8px;top:8px;min-width:0;padding:4px 8px;background:transparent;font-size:18px}
+#ach{display:none;position:fixed;inset:0;z-index:10;background:var(--bg);overflow-y:auto;padding:calc(14px + env(safe-area-inset-top,0px)) 14px calc(24px + env(safe-area-inset-bottom,0px))}
+#ach.open{display:block}
+.w.lk{opacity:.5;filter:grayscale(1)}
+#ach-open{margin-top:0}
+.lv{margin-top:10px}
+.lv span{display:block;font-weight:800;font-size:15px;margin-bottom:4px}
+.lvb{height:12px;background:var(--bd);border-radius:99px;overflow:hidden}
+.lvb i{display:block;height:100%;width:0;background:var(--ok);transition:width .2s}
+#pin{display:none;position:fixed;inset:0;z-index:30;background:rgba(0,0,0,.6);align-items:center;justify-content:center;padding:20px}
+#pin.open{display:flex}
+#pin .box{background:var(--card);border:2px solid var(--bd);border-radius:18px;padding:18px;width:100%;max-width:320px}
+#pin input{font:inherit;width:100%;padding:10px 12px;border-radius:12px;border:2px solid var(--bd);background:var(--bg);color:var(--tx);margin:10px 0;-webkit-user-select:text;user-select:text}
+#pin-e{color:var(--hp);font-weight:700;min-height:20px;margin-top:8px}
+#kfx{position:fixed;inset:0;z-index:15;pointer-events:none;overflow:hidden;display:none}
+#kfx.on{display:block}
+#kfx .bg{position:absolute;inset:0;background:radial-gradient(circle,#fff3b0 0,rgba(255,207,31,.55) 40%,transparent 72%);animation:kbg 1.6s forwards}
+@keyframes kbg{0%{opacity:0}15%{opacity:1}100%{opacity:0}}
+#kfx .ttl{position:absolute;left:0;right:0;top:38%;text-align:center;font-size:clamp(24px,8vw,40px);font-weight:900;color:#ffcf1f;text-shadow:0 3px 0 #7a5200,0 0 24px #fff;animation:kt 2.6s forwards}
+@keyframes kt{0%{transform:scale(.2) rotate(-8deg);opacity:0}15%{transform:scale(1.25) rotate(3deg);opacity:1}25%{transform:scale(1) rotate(0)}85%{opacity:1}100%{transform:scale(1.1);opacity:0}}
+#kfx .fall{position:absolute;top:-40px;font-size:28px;animation:kf 2.4s ease-in forwards}
+@keyframes kf{to{transform:translateY(110vh) rotate(540deg)}}
+#kfx .bst{position:absolute;left:50%;top:45%;font-size:30px;animation:kb 1.4s ease-out forwards}
+@keyframes kb{to{transform:translate(var(--dx),var(--dy)) scale(.5) rotate(360deg);opacity:0}}
+.wrap.rum{animation:rum .8s}
+@keyframes rum{0%,100%{transform:none}20%{transform:translate(-8px,4px)}40%{transform:translate(8px,-4px)}60%{transform:translate(-6px,-2px)}80%{transform:translate(6px,2px)}}
+@media (prefers-reduced-motion:reduce){.shake,.fl,.sw,.pt,.wd,.stage.big{animation-duration:.01s}}
+#boss{position:relative;overflow:hidden;margin:12px 0;background:var(--card);border:3px solid var(--hp);border-radius:24px;padding:12px;text-align:center;cursor:pointer;touch-action:manipulation}
+#boss.off{border-color:var(--bd);cursor:default}
+#boss .be{font-size:64px;line-height:1}
+#boss .bh{height:16px;background:var(--bd);border-radius:99px;overflow:hidden;margin:8px auto 0;max-width:300px}
+#boss .bh i{display:block;height:100%;width:100%;background:var(--hp);transition:width .12s}
+#nk,#lb{display:none;position:fixed;inset:0;z-index:30;background:rgba(0,0,0,.6);align-items:center;justify-content:center;padding:20px}
+#nk.open,#lb.open{display:flex}
+.bx{background:var(--card);border:2px solid var(--bd);border-radius:18px;padding:18px;width:100%;max-width:360px;max-height:80vh;overflow-y:auto}
+#nk input{font:inherit;width:100%;padding:10px 12px;border-radius:12px;border:2px solid var(--bd);background:var(--bg);color:var(--tx);margin:10px 0}
+#nk-e{color:var(--hp);font-weight:700;min-height:20px;margin-top:8px}
+.lr{display:flex;gap:8px;padding:7px 0;border-bottom:1px solid var(--bd)}
+.lr.me{color:var(--ok);font-weight:800}
+.lr b{flex:0 0 34px}.lr span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 
-body {
-  margin: 0;
-  padding: 15px;
-  color: white;
-  font-family: Arial, sans-serif;
-  text-align: center;
-  background: linear-gradient(180deg, #07182c, #17466b, #09243b);
-  min-height: 100vh;
-  overflow-x: hidden;
-}
-
-h1 {
-  cursor: pointer;
-  font-size: 29px;
-  text-shadow: 0 0 15px #55d9ff;
-}
-
-.subtitle {
-  color: #b9eaff;
-}
-
-.panel {
-  max-width: 500px;
-  margin: 15px auto;
-  padding: 16px;
-  background: #ffffff15;
-  border: 1px solid #ffffff35;
-  border-radius: 18px;
-  box-shadow: 0 5px 20px #0005;
-}
-
-.stats {
-  display: flex;
-  justify-content: space-around;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.stat {
-  background: #061b30;
-  padding: 12px;
-  border-radius: 12px;
-  min-width: 100px;
-}
-
-.stat strong {
-  display: block;
-  font-size: 23px;
-  color: #ffd75e;
-}
-
-.character {
-  font-size: 105px;
-  margin: 12px;
-  cursor: pointer;
-  user-select: none;
-  transition: transform .15s;
-}
-
-.character:active {
-  transform: scale(.85);
-}
-
-button {
-  border: none;
-  border-radius: 12px;
-  padding: 12px 17px;
-  margin: 5px;
-  color: white;
-  font-size: 15px;
-  font-weight: bold;
-  background: #167fc1;
-  cursor: pointer;
-}
-
-button:active {
-  transform: scale(.96);
-}
-
-.green { background: #168c52; }
-.red { background: #c43d48; }
-.gold { background: #b8860b; color: white; }
-
-.shop-item {
-  background: #092b48;
-  border-radius: 12px;
-  padding: 12px;
-  margin: 9px 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 8px;
-  text-align: left;
-}
-
-.shop-item button {
-  flex-shrink: 0;
-}
-
-#adminEvents {
-  display: none;
-  border: 2px solid #ffd75e;
-  background: #362b13;
-}
-
-#message {
-  min-height: 25px;
-  color: #ffe17b;
-  font-weight: bold;
-}
-
-#eventName {
-  color: #7ce5ff;
-  font-size: 20px;
-}
-
-.snow {
-  position: fixed;
-  top: -20px;
-  color: white;
-  pointer-events: none;
-  z-index: 10;
-  animation: fall linear infinite;
-}
-
-@keyframes fall {
-  to {
-    transform: translateY(110vh);
-  }
-}
-
-.small {
-  color: #b9d9ec;
-  font-size: 12px;
-}
+/* Halloween event */
+body.halloween{--bg:#17101f;--card:#281936;--tx:#fff0d8;--mut:#c8a9d6;--ac:#ff8a24;--acx:#321300;--bd:#684078;--stage:#321d42;color-scheme:dark}
+body.halloween .stage{border-color:#ff8a24;box-shadow:0 0 18px #ff7b2444}
+#h-event{display:none;background:linear-gradient(135deg,#32183f,#6b2c38);border:2px solid #ff8a24;border-radius:18px;padding:12px;margin:12px 0;text-align:center;color:#fff1d9}
+#h-event.on{display:block}#h-event b{font-size:18px}#h-event .hrow{display:flex;justify-content:space-between;gap:8px;margin-top:8px;align-items:center}
+#candy{background:#ffb02e;color:#3a1800;padding:6px 12px;border-radius:999px;font-weight:900}
+.hshop{border:2px solid #ff8a24!important}.hshop button{background:#ff8a24;color:#321300}
+.halloween-tag{color:#ffb15b!important}
 </style>
 </head>
-
 <body>
-
-<h1 id="gameTitle">🎄 БЕЙ ДРУГА 🎄</h1>
-<p class="subtitle">НОВОГОДНИЙ ИВЕНТ ❄️</p>
-
-<div class="panel">
-  <div class="stats">
-    <div class="stat">
-      <strong id="score">0</strong>
-      Очки
-    </div>
-    <div class="stat">
-      <strong id="gifts">0</strong>
-      Подарки 🎁
-    </div>
-    <div class="stat">
-      <strong id="weapon">Варежка</strong>
-      Оружие
-    </div>
+<div class="wrap">
+  <div class="top">
+    <div>🎃 Лупи приятеля<small id="kills">Хэллоуинское обновление</small></div>
+    <div class="money" id="money"></div>
   </div>
-</div>
 
-<div class="panel">
-  <h2>🎅 Новогоднее событие</h2>
-  <div id="eventName">Ожидание события...</div>
-  <div class="character" id="character" onclick="hit()">🎅</div>
-  <p>Нажимай на персонажа, чтобы получать очки и подарки!</p>
-  <div id="message">Удачи!</div>
-  <button class="gold" onclick="newEvent()">Найти персонажа</button>
-</div>
+  <div class="lv"><span id="lvt"></span><div class="lvb"><i id="lvf"></i></div></div>
+  <div class="tip" id="stat" style="text-align:center"></div>
 
-<div class="panel">
-  <h2>🛒 Магазин оружия</h2>
+  <div id="boss"><div class="be" id="b-e"></div><div class="name" id="b-n"></div><div class="bh"><i id="b-hp"></i></div><div class="hptx" id="b-tx"></div><div class="hptx" id="b-me"></div><div class="tip">Босс каждый час. Тапай по нему: здоровье общее для всех игроков</div></div>
+  <div class="stage" id="stage">
+    <div class="name" id="name"></div>
+    <div class="hpbar"><i id="hp"></i></div>
+    <div class="hptx" id="hptx"></div>
+    <svg id="face" viewBox="0 0 200 200" aria-hidden="true">
+      <rect id="body" x="40" y="150" width="120" height="60" rx="26"/>
+      <g id="hairb"></g><circle id="head" cx="100" cy="95" r="62" stroke="rgba(0,0,0,.25)" stroke-width="4"/><g id="hair"></g>
+      <g id="eyes"></g>
+      <path id="mouth" fill="none" stroke="#3b1d1d" stroke-width="6" stroke-linecap="round"/>
+      <circle id="bump1" cx="140" cy="62" r="0" fill="#c24b8a" opacity=".7"/>
+      <circle id="bump2" cx="62" cy="118" r="0" fill="#c24b8a" opacity=".6"/>
+    </svg>
+    <div class="tip">Тапай по герою, чтобы ударить</div>
+    <div id="flash"></div><div id="combo"></div><button id="snd" aria-label="Звук">🔊</button>
+  </div>
+
+  <div id="h-event"><b>🎃 ХЭЛЛОУИНСКИЙ ИВЕНТ</b><div id="h-desc">Побеждай хэллоуинских героев и собирай конфеты!</div><div class="hrow"><span id="candy">🍬 0</span><span id="h-time">Ивент активен</span></div></div>
+  <h2>🎃 Магазин Хэллоуина</h2>
+  <div class="tip">Собирай конфеты у хэллоуинских персонажей и открывай праздничные предметы.</div>
+  <div id="h-shop"></div>
+
+  <button class="rs" id="ach-open"></button>
+  <button class="rs" id="lb-open" style="margin-top:8px">🏅 Топ по деньгам</button>
+  <button class="rs" id="nick-btn" style="margin-top:8px"></button>
+  <h2>Магазин предметов</h2>
   <div id="shop"></div>
+  <button class="rs" id="reset">Начать заново</button>
 </div>
 
-<div class="panel">
-  <h2>🏆 Достижения</h2>
-  <p id="achievement">Пока нет достижений</p>
-</div>
+<div id="ach"><div class="ap">
+ <div class="top"><div>Достижения</div><button class="ghost" id="ach-close">Закрыть</button></div>
+ <div id="ach-list" style="margin-top:12px"></div>
+</div></div>
 
-<!-- СЕКРЕТНАЯ АДМИНКА -->
-<div class="panel" id="adminEvents">
-  <h2>👑 АДМИН-ПАНЕЛЬ</h2>
-  <p>Управление новогодними событиями</p>
+<div id="pin"><div class="box"><b>Секретный вход</b><input id="pin-i" type="password" autocomplete="off" placeholder="Код"><button id="pin-ok">Войти</button> <button id="pin-x" style="background:transparent;color:var(--tx);border:2px solid var(--bd)">Отмена</button><div id="pin-e"></div></div></div>
 
-  <button onclick="spawnEvent(0)">🎅 Санта</button>
-  <button onclick="spawnEvent(1)">⛄ Снеговик</button>
-  <button onclick="spawnEvent(2)">🧝 Эльф</button>
-  <button onclick="spawnEvent(3)">🦌 Олень</button>
-  <button onclick="spawnEvent(4)">💚 Гринч</button>
+<div id="nk"><div class="bx"><b>Придумай ник</b><input id="nk-i" maxlength="16" autocomplete="off" placeholder="Твой ник (2–16 символов)"><button id="nk-ok">Сохранить</button> <button id="nk-x" style="background:transparent;color:var(--tx);border:2px solid var(--bd)">Позже</button><div id="nk-e"></div></div></div>
 
-  <hr>
+<div id="lb"><div class="bx"><div class="top"><div>🏅 Топ по деньгам</div><button id="lb-x" style="min-width:0">✕</button></div><div id="lb-list" style="margin-top:10px"></div></div></div>
 
-  <button class="gold" onclick="spawnRandomEvent()">🎲 Случайный ивент</button>
-  <button class="red" onclick="stopEvent()">⛔ Остановить ивент</button>
+<div id="kfx"></div>
+<div id="toast" role="status"></div>
+<button id="adm-open" hidden aria-label="Админ-панель">⚙️</button>
 
-  <p id="adminMessage"></p>
-  <button class="red" onclick="closeAdmin()">Закрыть админку</button>
-</div>
-
-<p class="small">Демо-версия. Прогресс сохраняется на этом устройстве.</p>
+<div id="adm"><div class="ap">
+ <div class="top"><div>Админ-панель</div><button class="ghost" id="adm-close">Закрыть</button></div>
+ <h2>Деньги</h2>
+ <div class="ar"><input id="a-amt" type="number" inputmode="numeric" min="1" value="100000"><button id="a-give">Выдать</button></div>
+ <div class="ar"><button data-amt="1000">+1 тыс</button><button data-amt="1000000">+1 млн</button><button data-amt="1000000000">+1 млрд</button></div>
+ <h2>🎃 Хэллоуинский ивент</h2>
+ <div class="ar"><button id="a-h-start">🎃 Запустить на 120 сек.</button><button class="ghost" id="a-h-stop">Остановить</button></div>
+ <div class="ar"><input id="a-candy" type="number" min="1" value="100" placeholder="Конфеты"><button id="a-candy-give">Выдать конфеты</button></div>
+ <h2>Предметы</h2>
+ <div class="ar"><select id="a-item"></select><button id="a-item-give">Выдать</button></div>
+ <div class="ar"><button class="ghost" id="a-item-all">Выдать все предметы</button></div>
+ <h2>Создать персонажа</h2>
+ <div class="ar"><input id="a-name" list="a-nl" placeholder="Имя (любое)" maxlength="20"><datalist id="a-nl"></datalist></div>
+ <div class="ar"><select id="a-hair"></select><select id="a-hc"></select></div>
+ <div class="ar"><select id="a-skin"></select><select id="a-shirt"></select></div>
+ <div class="ar"><select id="a-crown"><option value="">Без короны</option><option value="1">С золотой короной</option></select></div>
+ <div class="ar"><input id="a-hp" type="number" inputmode="numeric" min="1" placeholder="Здоровье (пусто — по уровню)"><button id="a-spawn">Создать</button></div>
+ <div class="ar"><button class="ghost" id="a-kill">Победить текущего</button> <button class="ghost" id="a-lvl">+1 уровень</button></div>
+ <div id="a-msg" role="status"></div>
+</div></div>
 
 <script>
-const ADMIN_PASSWORD = "2026";
+var NAMES=["Вася","Петя","Маша","Игорь","Олег","Анна","Дима","Катя","Сергей","Лена","Макс","Оля","Тимур","Нина","Артём","Юля","Борис","Света","Глеб","Алиса","Фёдор","Вика","Рома","Зоя","Костя","Полина","Андрей","Ксюша","Влад","Тоня","Гоша","Элина","Паша","Лиза","Ваня","Диана","Стас","Марина","Лёша","Вера","Руслан","Алёна","Миша","Таня","Егор","Софа","Кирилл","Ира","Денис","Агата","Назар","Люда","Эрик","Мила","Захар","Рита","Ян","Белла","Платон","Дарина","Матвей","Алексей","Никита","Иван","Николай","Михаил","Александр","Максим","Дмитрий","Евгений","Владимир","Виктор","Григорий","Леонид","Богдан","Тихон","Ярослав","Савелий","Мирон","Лев","Фома","Герман","Семён","Тарас","Гордей","Елисей","Добрыня","Святослав","Арсений","Юрий","Даниил","Ренат","Тигран","Марк","Роберт","Альберт","Эмиль","Александра","Наталья","Ольга","Екатерина","Анастасия","Мария","Елена","Татьяна","Виктория","Валерия","Кристина","Ангелина","Милана","Ева","Варя","Настя","Соня","Даша","Яна","Алла","Галя","Зина","Клава","Лариса","Злата","Камилла","Арина","Василиса","Ульяна","Амина","Лера","Оксана","Регина","Эльвира","Тамара","Фаина","Снежана","Маргарита","Евгения","Жанна"];
 
-const characters = [
-  { name: "Санта-Клаус", emoji: "🎅", reward: 2 },
-  { name: "Снеговик", emoji: "⛄", reward: 1 },
-  { name: "Новогодний эльф", emoji: "🧝", reward: 2 },
-  { name: "Северный олень", emoji: "🦌", reward: 3 },
-  { name: "Гринч", emoji: "💚", reward: 5 }
+var W=[
+ {n:"Ладошка",e:"👏",d:1,p:0},
+ {n:"Мягкая подушка",e:"🛏️",d:3,p:40},
+ {n:"Резиновая уточка",e:"🦆",d:8,p:200},
+ {n:"Плюшевый тыквёнок",e:"🎃",d:20,p:900},
+ {n:"Конфетная палочка",e:"🍭",d:55,p:4000},
+ {n:"Светящийся фонарик",e:"🏮",d:140,p:16000},
+ {n:"Магический пузырь",e:"🫧",d:360,p:60000},
+ {n:"Радужная звезда",e:"🌟",d:1000,p:250000},
+ {n:"Снежный шар",e:"🔮",d:2500,p:1000000},
+ {n:"Космическая искра",e:"✨",d:7000,p:5000000,x:"✨"},
+ {n:"Суперзвезда",e:"💫",d:20000,p:25000000,sp:1,nw:1}
 ];
-
-const weapons = [
-  { name: "Варежка", price: 0, power: 1 },
-  { name: "Леденец", price: 10, power: 2 },
-  { name: "Снежный бластер", price: 25, power: 4 },
-  { name: "Посох Санты", price: 50, power: 7 },
-  { name: "Подарочный молот", price: 100, power: 12 }
+W.sort(function(a,b){return a.d-b.d});
+W.forEach(function(w,i){if(i>0&&!w.sp){var v=w.d*(60+4*i),m=Math.pow(10,Math.floor(Math.log10(v))-1);w.p=Math.round(v/m)*m}});
+ {f:'<path d="M46 70L48 26L68 52L80 14L96 46L108 10L120 46L136 16L142 52L158 28L156 70Q100 44 46 70Z"/>'},
+ {f:'<circle cx="56" cy="62" r="16"/><circle cx="76" cy="44" r="16"/><circle cx="100" cy="38" r="17"/><circle cx="124" cy="44" r="16"/><circle cx="144" cy="62" r="16"/>'},
+ {b:'<circle cx="36" cy="84" r="34"/><circle cx="50" cy="40" r="34"/><circle cx="100" cy="18" r="40"/><circle cx="150" cy="40" r="34"/><circle cx="164" cy="84" r="34"/>',f:CAP},
+ {b:'<circle cx="52" cy="30" r="20"/><circle cx="148" cy="30" r="20"/>',f:CAP},
+ {b:'<path d="M36 90Q24 120 36 150Q26 175 44 190L156 190Q174 175 164 150Q176 120 164 90Q170 20 100 22Q30 20 36 90Z"/>',f:CAP},
+ {f:'<path d="M40 88Q36 30 100 30Q164 30 160 88Q150 56 112 52Q80 70 40 88Z"/>'},
+ {f:'<path d="M90 36Q100 10 110 36Z"/><path d="M38 86Q34 60 52 50Q46 70 52 90Z"/><path d="M162 86Q166 60 148 50Q154 70 148 90Z"/>'},
+ {b:'<rect x="30" y="50" width="14" height="120" rx="7"/><rect x="44" y="40" width="14" height="130" rx="7"/><rect x="142" y="40" width="14" height="130" rx="7"/><rect x="156" y="50" width="14" height="120" rx="7"/>',f:CAP},
+ {f:CAP+'<path d="M44 56L40 14L76 38Z"/><path d="M156 56L160 14L124 38Z"/>'},
+ {b:'<path d="M36 100Q28 20 100 22Q172 20 164 100Q176 130 160 150L40 150Q24 130 36 100Z"/>',f:CAP},
+ {f:'<path d="M40 92L36 50L56 58L58 28L78 44L96 22L112 44L134 24L140 48L160 40L160 92Q150 60 100 58Q50 60 40 92Z"/>'},
+ {b:'<circle cx="36" cy="60" r="12"/><circle cx="30" cy="84" r="12"/><circle cx="32" cy="108" r="12"/><circle cx="44" cy="128" r="12"/><circle cx="164" cy="60" r="12"/><circle cx="170" cy="84" r="12"/><circle cx="168" cy="108" r="12"/><circle cx="156" cy="128" r="12"/>'},
+ {f:CAP+'<path d="M46 96Q30 130 44 150Q36 170 50 184Q64 170 58 150Q70 126 60 100Z"/><path d="M154 96Q170 130 156 150Q164 170 150 184Q136 170 142 150Q130 126 140 100Z"/>'},
+ {f:'<path d="M50 60L56 16L76 34L100 10L124 34L144 16L150 60Q100 44 50 60Z"/>'},
+ {f:CAP+'<path d="M50 60Q28 24 48 6Q54 30 76 40Z"/><path d="M150 60Q172 24 152 6Q146 30 124 40Z"/>'}
 ];
+var SKIN=["#ffd9a8","#f3b98a","#c98d62","#ffe3c2","#e8a67a"];
+var SHIRT=["#4f8cff","#ff6b6b","#3ec28f","#a46bff","#ffb400","#ff7ab8"];
+var S={money:0,kills:0,owned:[0],cur:0,v:4,lvl:1,xp:0};
+var hp=0,max=0,nm="",skin="",shirt="";
+var halloweenEnemy=false, halloweenOn=false, halloweenUntil=0, halloweenTimer=null;
+var HWEAPONS=[{n:"Тыквенная конфета",e:"🍬",d:180,p:25},{n:"Призрачный фонарик",e:"🏮",d:650,p:80},{n:"Волшебный посох",e:"✨",d:2200,p:180}], HWEAPON_INDEX={};
+var $=function(i){return document.getElementById(i)};
 
-let saveData = {};
+function load(){try{var r=localStorage.getItem("beat-v2");if(r){var o=JSON.parse(r);if(o&&o.owned){if(!o.v){var ol=W.filter(function(w){return !w.nw});o.owned=o.owned.map(function(i){return W.indexOf(ol[i])}).filter(function(i){return i>=0});o.cur=Math.max(0,W.indexOf(ol[o.cur]));o.v=4;if(!o.owned.length)o.owned=[0]}if(o.v===3){var o4=W.filter(function(w){return !w.n4});o.owned=o.owned.map(function(i){return W.indexOf(o4[i])}).filter(function(i){return i>=0});o.cur=Math.max(0,W.indexOf(o4[o.cur]));o.v=4;if(!o.owned.length)o.owned=[0]}if(!o.lvl){o.lvl=1;o.xp=(o.kills||0)*10;while(o.xp>=need(o.lvl)){o.xp-=need(o.lvl);o.lvl++}}S=o;S.candy=Math.max(0,+S.candy||0)}}}catch(e){}}
+function save(){qPush();try{localStorage.setItem("beat-v2",JSON.stringify(S))}catch(e){}}
+function fmt(n){return n.toLocaleString("ru-RU")}
+function pick(a){return a[Math.floor(Math.random()*a.length)]}
 
-try {
-  saveData = JSON.parse(localStorage.getItem("winterDemoSave")) || {};
-} catch (e) {
-  saveData = {};
+var king=false,KC='<g fill="#ffcf1f" stroke="#7a5200" stroke-width="3"><path d="M50 56L54 12L78 34L100 4L122 34L146 12L150 56Q100 68 50 56Z"/><circle cx="100" cy="30" r="5" fill="#ff3d5a"/><circle cx="72" cy="40" r="4" fill="#3aa0ff"/><circle cx="128" cy="40" r="4" fill="#3aa0ff"/></g>';
+HAIR[28]={f:KC};
+var GIRLS=["Маша","Анна","Катя","Лена","Оля","Нина","Юля","Света","Алиса","Вика","Зоя","Полина","Ксюша","Тоня","Элина","Лиза","Диана","Марина","Вера","Алёна","Таня","Софа","Ира","Агата","Люда","Мила","Рита","Белла","Дарина","Александра","Наталья","Ольга","Екатерина","Анастасия","Мария","Елена","Татьяна","Виктория","Валерия","Кристина","Ангелина","Милана","Ева","Варя","Настя","Соня","Даша","Яна","Алла","Галя","Зина","Клава","Лариса","Злата","Камилла","Арина","Василиса","Ульяна","Амина","Лера","Оксана","Регина","Эльвира","Тамара","Фаина","Снежана","Маргарита","Евгения","Жанна"];
+var FH=[3,4,7,8,9,10,11,18,19,23,24,26,27],MH=[0,1,5,12,14,15,20,21,25,29],UH=[2,6,13,16,17,22];
+function rh(g){var p=(g?FH:MH).concat(UH);return p[Math.floor(Math.random()*p.length)]}
+function spawn(o){o=o||{};king=Math.random()<0.001;
+  halloweenEnemy=!!(halloweenOn&&!o.nm&&Math.random()<0.42);
+  nm=o.nm||pick(NAMES);
+  if(halloweenEnemy)nm=pick(["Тыквоголовый","Призрак","Ведьма","Скелет","Паучий король"]);var girl=GIRLS.indexOf(nm)>-1||(NAMES.indexOf(nm)<0&&Math.random()<.5);skin=o.skin||(halloweenEnemy?pick(["#b7e36a","#b68aff","#ff9c43"]):pick(SKIN));shirt=o.shirt||(halloweenEnemy?"#39234d":pick(SHIRT));
+  max=o.hp||hpFor();if(king&&!o.hp)max*=4;hp=max;
+  $("name").textContent=nm;
+  $("head").setAttribute("fill",skin);
+  $("body").setAttribute("fill",shirt);
+  var hs=o.hs!=null?HAIR[o.hs]:HAIR[rh(girl)],a='<g fill="'+(o.hc||pick(HC))+'" stroke="rgba(0,0,0,.3)" stroke-width="3">';
+  $("hairb").innerHTML=hs.b?a+hs.b+'</g>':"";
+  $("hair").innerHTML=hs.f?a+hs.f+'</g>':"";
+  if(halloweenEnemy)$("hair").innerHTML+='<path d="M62 45L48 8L83 34L100 2L117 34L152 8L138 45Z" fill="#ff8a24" stroke="#57244f" stroke-width="4"/>';
+  if(king||o.crown)$("hair").innerHTML+=KC;if(king)$("name").textContent="👑 Король "+nm;
+  draw();
+}
+function reward(){return Math.max(1,Math.round(max*0.4))}
+
+function draw(){
+  var f=hp/max;
+  $("hp").style.width=Math.max(0,f*100)+"%";
+  $("hptx").textContent="Здоровье: "+fmt(Math.max(0,Math.ceil(hp)))+" / "+fmt(max)+"  ·  награда: "+fmt(reward())+" монет";
+  var dz=f<.35;
+  $("eyes").innerHTML=dz
+    ?'<path d="M64 80l20 20M84 80l-20 20M116 80l20 20M136 80l-20 20" stroke="#3b1d1d" stroke-width="6" stroke-linecap="round"/>'
+    :'<circle cx="74" cy="90" r="8" fill="#3b1d1d"/><circle cx="126" cy="90" r="8" fill="#3b1d1d"/>';
+  $("mouth").setAttribute("d",f>.66?"M74 128q26 22 52 0":f>.35?"M76 134h48":"M76 140q24-22 48 0");
+  $("bump1").setAttribute("r",f<.7?14:0);
+  $("bump2").setAttribute("r",f<.4?11:0);
+  $("money").textContent="💰 "+fmt(S.money);
+  var L=S.lvl||1;$("lvt").textContent="Ур. "+L+" · HP героев +"+(8*(L-1))+"% · урон +"+(L-1)+"%";$("lvf").style.width=Math.min(100,100*(S.xp||0)/need(L))+"%";
+  $("kills").textContent="Побеждено: "+fmt(S.kills)+" · урон за удар: "+fmt(W[S.cur].d);
 }
 
-let score = Number(saveData.score) || 0;
-let gifts = Number(saveData.gifts) || 0;
-let weaponIndex = Number(saveData.weaponIndex) || 0;
-let owned = Array.isArray(saveData.owned) ? saveData.owned : [0];
-let currentCharacter = 0;
-let eventActive = true;
-
-function save() {
-  localStorage.setItem("winterDemoSave", JSON.stringify({
-    score,
-    gifts,
-    weaponIndex,
-    owned
-  }));
+function hit(ev){
+  var w=W[S.cur],d=w.d,now=Date.now();combo=now-last<900?combo+1:1;last=now;d=Math.round(d*Math.min(1+combo*0.02,2)*(1+0.01*((S.lvl||1)-1)));var crit=Math.random()<.12;if(crit)d*=3;S.hits=(S.hits||0)+1;if(crit)S.crits=(S.crits||0)+1;S.maxC=Math.max(S.maxC||0,combo);
+  hp-=d;
+  var f=$("face");f.classList.remove("shake");void f.offsetWidth;f.classList.add("shake");
+  var st=$("stage"),r=st.getBoundingClientRect();
+  var t=document.createElement("div");t.className="fl"+(crit?" crit":"");t.textContent=(crit?"КРИТ! ":"")+"-"+fmt(d);
+  t.style.left=(ev.clientX-r.left-16)+"px";t.style.top=(ev.clientY-r.top-24)+"px";
+  st.appendChild(t);setTimeout(function(){t.remove()},700);fx(st,r,ev,w,crit);chk();
+  if(hp<=0){
+    coins(st,r);
+    S.earned=(S.earned||0)+reward();
+    if(king){S.kingK=1;unlock();giveSuper();kingAnim()}
+    S.money+=reward();S.kills++;
+    if(halloweenEnemy){var candyGain=5+Math.floor(Math.random()*11);S.candy=(S.candy||0)+candyGain;tq("🍬 +"+candyGain+" конфет за хэллоуинского героя!");}
+    addXp(king?100:10);save();spawn();shop();halloweenDraw();
+  }else draw();
 }
 
-function update() {
-  document.getElementById("score").textContent = score;
-  document.getElementById("gifts").textContent = gifts;
-  document.getElementById("weapon").textContent = weapons[weaponIndex].name;
-
-  let achievement = "Пока нет достижений";
-
-  if (score >= 100) achievement = "🥉 Новогодний новичок";
-  if (score >= 500) achievement = "🥈 Повелитель праздника";
-  if (score >= 1000) achievement = "🥇 Легенда Нового года";
-
-  document.getElementById("achievement").textContent = achievement;
-
-  save();
-}
-
-function newEvent() {
-  const index = Math.floor(Math.random() * characters.length);
-  spawnEvent(index);
-}
-
-function spawnEvent(index) {
-  currentCharacter = index;
-  eventActive = true;
-
-  const character = characters[index];
-
-  document.getElementById("character").textContent = character.emoji;
-  document.getElementById("eventName").textContent =
-    "Появился: " + character.name;
-
-  document.getElementById("message").textContent =
-    "Событие началось! Получай подарки!";
-
-  const adminMessage = document.getElementById("adminMessage");
-  if (adminMessage) {
-    adminMessage.textContent = "Запущен ивент: " + character.name;
-  }
-}
-
-function spawnRandomEvent() {
-  const index = Math.floor(Math.random() * characters.length);
-  spawnEvent(index);
-}
-
-function stopEvent() {
-  eventActive = false;
-  document.getElementById("character").textContent = "❄️";
-  document.getElementById("eventName").textContent = "Ивент остановлен";
-  document.getElementById("message").textContent = "Ожидай нового события!";
-  document.getElementById("adminMessage").textContent = "Ивент остановлен";
-}
-
-function hit() {
-  if (!eventActive) {
-    document.getElementById("message").textContent =
-      "Сейчас нет активного события!";
-    return;
-  }
-
-  const power = weapons[weaponIndex].power;
-  const character = characters[currentCharacter];
-
-  score += power;
-
-  let giftChance = Math.random();
-
-  if (giftChance < 0.65) {
-    const earned = Math.floor(Math.random() * 3) + 1;
-    gifts += earned;
-
-    document.getElementById("message").textContent =
-      "⭐ +" + power + " очков и 🎁 +" + earned + " подарков!";
-  } else {
-    document.getElementById("message").textContent =
-      "+" + power + " очков! Продолжай!";
-  }
-
-  if (Math.random() < 0.12) {
-    newEvent();
-  }
-
-  update();
-}
-
-function renderShop() {
-  const shop = document.getElementById("shop");
-  shop.innerHTML = "";
-
-  weapons.forEach((weapon, index) => {
-    const item = document.createElement("div");
-    item.className = "shop-item";
-
-    const info = document.createElement("span");
-    info.textContent =
-      weapon.name + " | Сила: " + weapon.power +
-      " | Цена: " + weapon.price + " 🎁";
-
-    const button = document.createElement("button");
-
-    if (owned.includes(index)) {
-      button.textContent = weaponIndex === index ? "Выбрано" : "Выбрать";
-      button.className = "green";
-      button.onclick = () => selectWeapon(index);
-    } else {
-      button.textContent = "Купить";
-      button.onclick = () => buy(index);
-    }
-
-    item.appendChild(info);
-    item.appendChild(button);
-    shop.appendChild(item);
+function shop(){
+  var h="";
+  W.forEach(function(w,i){
+    var own=S.owned.indexOf(i)>-1,on=S.cur===i;if(w.sp&&!own)return;
+    var btn=on?'<button class="cur" disabled>В руках</button>'
+      :own?'<button class="eq" data-a="eq" data-i="'+i+'">Взять</button>'
+      :'<button data-a="buy" data-i="'+i+'"'+(S.money<w.p?" disabled":"")+'>'+fmt(w.p)+' 💰</button>';
+    h+='<div class="w'+(on?" on":"")+'"><div class="e">'+w.e+'</div><div class="i"><b>'+w.n+'</b><span>Урон: '+fmt(w.d)+'</span></div>'+btn+'</div>';
   });
+  var sp=W.findIndex(function(w){return w.sp});if(S.owned.indexOf(sp)<0)h+='<div class="w lk"><div class="e">🔒</div><div class="i"><b>Супер-предмет</b><span>Победи короля с золотой короной</span></div></div>';
+  $("shop").innerHTML=h;chk();
+  draw();
+  halloweenDraw();
 }
 
-function buy(index) {
-  const weapon = weapons[index];
-
-  if (gifts < weapon.price) {
-    document.getElementById("message").textContent =
-      "Не хватает подарков!";
-    return;
-  }
-
-  gifts -= weapon.price;
-  owned.push(index);
-  weaponIndex = index;
-
-  renderShop();
-  update();
-
-  document.getElementById("message").textContent =
-    "🎉 Куплено: " + weapon.name;
+function syncHalloweenWeapons(){
+  (S.hOwned||[]).forEach(function(i){if(HWEAPON_INDEX[i]==null){HWEAPON_INDEX[i]=W.push({n:HWEAPONS[i].n,e:HWEAPONS[i].e,d:HWEAPONS[i].d,p:0,nw:1})-1;}var wi=HWEAPON_INDEX[i];if(S.owned.indexOf(wi)<0)S.owned.push(wi);});
 }
-
-function selectWeapon(index) {
-  if (!owned.includes(index)) return;
-
-  weaponIndex = index;
-  renderShop();
-  update();
+function halloweenDraw(){
+  var c=$("candy");if(c)c.textContent="🍬 "+fmt(S.candy||0);
+  var box=$("h-shop");if(!box)return;
+  box.innerHTML=HWEAPONS.map(function(w,i){var owned=S.hOwned&&S.hOwned.indexOf(i)>-1;return '<div class="w hshop"><div class="e">'+w.e+'</div><div class="i"><b>'+w.n+'</b><span class="halloween-tag">Урон: '+fmt(w.d)+' · Цена: '+w.p+' 🍬</span></div><button data-hbuy="'+i+'" '+(owned?'disabled':'')+'>'+(owned?'Куплено':'Купить')+'</button></div>'}).join("");
+  var ev=$("h-event");if(ev)ev.classList.toggle("on",halloweenOn);
+  document.body.classList.toggle("halloween",halloweenOn);
 }
+function startHalloween(seconds){halloweenOn=true;halloweenUntil=Date.now()+seconds*1000;halloweenDraw();spawn();tq("🎃 Хэллоуинский ивент начался!");clearInterval(halloweenTimer);halloweenTimer=setInterval(function(){var left=Math.max(0,Math.ceil((halloweenUntil-Date.now())/1000));$("h-time").textContent="Осталось: "+left+" сек.";if(left<=0)stopHalloween()},250);}
+function stopHalloween(){halloweenOn=false;halloweenEnemy=false;clearInterval(halloweenTimer);$("h-time").textContent="Ивент завершён";document.body.classList.remove("halloween");$("h-event").classList.remove("on");spawn();halloweenDraw();}
+$("h-shop").addEventListener("click",function(e){var b=e.target.closest("button[data-hbuy]");if(!b)return;var i=+b.dataset.hbuy,w=HWEAPONS[i];S.hOwned=S.hOwned||[];if(S.hOwned.indexOf(i)>-1)return;if((S.candy||0)<w.p){tq("Не хватает конфет 🍬");return;}S.candy-=w.p;S.hOwned.push(i);syncHalloweenWeapons();var wi=HWEAPON_INDEX[i];S.cur=wi;save();shop();halloweenDraw();tq("Куплено: "+w.n+"!");});
 
-function closeAdmin() {
-  document.getElementById("adminEvents").style.display = "none";
-}
-
-// СЕКРЕТНОЕ ОТКРЫТИЕ ПО 5 НАЖАТИЯМ
-let titleClicks = 0;
-let titleTimer;
-
-document.getElementById("gameTitle").addEventListener("click", () => {
-  titleClicks++;
-
-  clearTimeout(titleTimer);
-
-  titleTimer = setTimeout(() => {
-    titleClicks = 0;
-  }, 2500);
-
-  if (titleClicks >= 5) {
-    titleClicks = 0;
-
-    const password = prompt("👑 Введи пароль администратора:");
-
-    if (password === null) return;
-
-    if (password === ADMIN_PASSWORD) {
-      document.getElementById("adminEvents").style.display = "block";
-      document.getElementById("adminMessage").textContent =
-        "Добро пожаловать, администратор!";
-    } else {
-      alert("❌ Неверный пароль!");
-    }
-  }
+$("stage").addEventListener("pointerdown",hit);
+$("shop").addEventListener("click",function(e){
+  var b=e.target.closest("button");if(!b)return;
+  var i=+b.dataset.i,w=W[i];
+  if(b.dataset.a==="buy"&&S.money>=w.p){S.money-=w.p;S.owned.push(i);S.cur=i}
+  else if(b.dataset.a==="eq"){S.cur=i}
+  save();shop();
+});
+$("reset").addEventListener("click",function(){
+  if(confirm("Сбросить весь прогресс?")){S={money:0,kills:0,owned:[0],cur:0,v:4,lvl:1,xp:0,admin:S.admin,nick:S.nick,candy:S.candy||0,hOwned:S.hOwned||[]};save();spawn();shop();halloweenDraw()}
 });
 
-// СНЕГ
-function makeSnow() {
-  const snow = document.createElement("div");
-  snow.className = "snow";
-  snow.textContent = "❄";
-  snow.style.left = Math.random() * 100 + "vw";
-  snow.style.fontSize = (10 + Math.random() * 18) + "px";
-  snow.style.animationDuration = (4 + Math.random() * 6) + "s";
-
-  document.body.appendChild(snow);
-
-  setTimeout(() => snow.remove(), 10000);
-}
-
-setInterval(makeSnow, 250);
-
-// Запуск
-renderShop();
-update();
-newEvent();
+var HN=["Лысый","Ёжик","Чёлка","Длинные","Пучок","Ирокез","Афро","Пучки по бокам","Каре","Косички","Высокие хвостики","Конский хвост","Боковой пробор","Чёлка до бровей","Бобрик","Панк-шипы","Кудри","Пышное облако","Два пучка","Длинные волны","Чёлка набок","Клок на макушке","Дреды","Кошачьи ушки","Средние","Лохматые","Кудряшки по бокам","Косы вперёд","Корона","Рожки"];
+var HCN=["Чёрные","Каштановые","Светлые","Рыжие","Седые","Синие","Розовые"];
+var SKN=["Светлая","Средняя","Смуглая","Бледная","Золотистая"];
+var SHN=["Синяя","Красная","Зелёная","Фиолетовая","Жёлтая","Розовая"];
 </script>
-
 </body>
-</html>
+</html>  
